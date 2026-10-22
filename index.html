@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<script>
+/* ==========================================================
+   ТРЕКИ САЙТА. Чтобы добавить новый трек:
+   1. Скопируй любой блок { ... }, вставь его ПЕРВЫМ в список
+   2. Поменяй название, строчку из песни и ссылку
+   Порядок в списке = порядок на сайте
+
+   title  - название трека
+   line   - строчка из песни (показывается рядом с названием)
+   tag    - короткая плашка: Новинка, Сингл, Есть клип и т.п.
+   yandex - ссылка на трек в Яндекс Музыке вида
+            https://music.yandex.ru/album/12345/track/67890
+   mp3    - ИЛИ прямая ссылка на mp3, если трека нет в Яндексе
+   clip   - ссылка на клип (необязательно)
+   isNew  - true, если трек новый (плашка станет красной)
+   ========================================================== */
+/* ==========================================================
+   ССЫЛКИ ГРУППЫ. Вставь адреса между кавычками.
+   Пустая ссылка = кнопка ведёт в блок треков на сайте
+   ========================================================== */
+const LINKS = {
+  vk:       '',   // группа ВКонтакте
+  telegram: '',   // Telegram-канал
+  yandex:   '',   // страница артиста в Яндекс Музыке
+  zvuk:     '',   // страница артиста в Звуке
+  donate:   ''    // донаты: VK Донут или ссылка на сбор
+};
+
+const TRACKS = [
+  { title: 'Подорожник', line: 'Вальс угасает лениво', tag: 'Новый релиз', isNew: true, yandex: '', mp3: '', clip: '' },
+  { title: 'Спутано-сожжено', line: 'Ты же не Феникс. Я жгу твои корабли', tag: 'Сингл', yandex: '', mp3: '', clip: 'https://vkvideo.ru/video-2000196336_154196336' },
+  { title: '2:00', line: 'Знаю, ты не спишь, как и я сейчас', tag: 'Плейлист Звука', yandex: '', mp3: '', clip: '' },
+  { title: 'Повелитель мух', line: 'Сохрани. И выбери молчать', tag: 'Радио России', yandex: '', mp3: '', clip: '' },
+  { title: 'Он говорит', line: 'Стихи, которым сто лет, и голос, который звучит сегодня', tag: 'Радио России', yandex: '', mp3: '', clip: '' },
+  { title: 'Пенелопа', line: 'Научиться бы, как ты, хохотать над всеми', tag: 'Сингл', yandex: '', mp3: '', clip: '' },
+  { title: 'Сеть', line: 'А за стеклом улыбается манекен', tag: 'Сингл', yandex: '', mp3: '', clip: '' }
+];
+</script>
+<title>Зал Бит.коМ, рок из Рыбинска</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Зал Бит.коМ — рок-группа из Рыбинска с 2021 года. Поэзия, гитарные риффы и терапийный сарказм. Новый сингл «Подорожник» уже скоро.">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="img/logo.png" type="image/png">
+<meta property="og:title" content="Зал Бит.коМ — рок из Рыбинска">
+<meta property="og:description" content="У каждой ноты есть своя история, и мы их расскажем. Слушайте новый сингл и смотрите клип «Спутано-сожжено».">
+<meta property="og:type" content="website">
+<!-- TODO: поменяй DOMAIN на адрес сайта после публикации (og:image без абсолютного URL не работает) -->
+<meta property="og:image" content="https://DOMAIN/img/hero.jpg">
+<meta property="og:url" content="https://DOMAIN/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@500;700;900&amp;family=Golos+Text:wght@400;500;600&amp;family=Literata:ital,opsz,wght@1,7..72,400;1,7..72,500&amp;display=swap">
+<style>
+body{margin:0;background:#000;color:#fff;font-family:'Golos Text',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth}
+a{color:#fff}a:hover{color:#FF3B3F}
+a:focus-visible,button:focus-visible{outline:3px solid #FF3B3F;outline-offset:4px}
+.disp{font-family:'Alumni Sans','Oswald','Arial Narrow',sans-serif}
+.poem{font-family:'Literata',Georgia,serif;font-style:italic}
+.btn{display:inline-flex;align-items:center;gap:12px;min-height:52px;padding:0 28px;border-radius:999px;text-decoration:none;font-weight:600;font-size:16px;transition:transform .2s ease,background .2s ease,color .2s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn-red{background:#E3161B;color:#fff}.btn-red:hover{background:#fff;color:#000}
+.btn-line{border:1.5px solid rgba(255,255,255,.6);color:#fff}.btn-line:hover{border-color:#fff;background:#fff;color:#000}
+.btn-ink{background:#000;color:#fff}.btn-ink:hover{background:#fff;color:#000}
+.navlink{text-decoration:none;font-size:15px;color:#d8d3cd}.navlink:hover{color:#fff}
+
+@keyframes rise{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes draw{from{stroke-dashoffset:2400}to{stroke-dashoffset:0}}
+@keyframes travel{from{stroke-dashoffset:2000}to{stroke-dashoffset:0}}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.12}}
+@keyframes thump{0%,100%{transform:scale(1)}8%{transform:scale(1.035)}16%{transform:scale(1)}24%{transform:scale(1.02)}32%{transform:scale(1)}}
+@keyframes ping{0%{transform:scale(1);opacity:.9}100%{transform:scale(3.2);opacity:0}}
+@keyframes zoom{from{transform:scale(1.18)}to{transform:scale(1)}}
+
+.up{opacity:0;animation:rise 1s cubic-bezier(.2,.8,.2,1) forwards}
+.d1{animation-delay:.15s}.d2{animation-delay:.3s}.d3{animation-delay:.45s}.d4{animation-delay:.7s}.d5{animation-delay:.95s}
+.ekg-base{stroke-dasharray:2400;stroke-dashoffset:2400;animation:draw 2.4s .4s cubic-bezier(.6,0,.2,1) forwards}
+.ekg-beat{stroke-dasharray:180 1820;opacity:0}
+.ekg-beat{animation:travel 2.6s linear 2.2s infinite, fade .3s linear 2.2s forwards}
+.track{display:flex;width:max-content;animation:marquee 38s linear infinite}
+.track-slow{animation-duration:60s}
+.colon{animation:blink 1s steps(1) infinite}
+.heart{animation:thump 1.3s ease-in-out infinite;transform-origin:center}
+.hero-photo{animation:zoom 2.8s cubic-bezier(.2,.8,.2,1) both}
+.dot{position:relative;display:inline-block;width:10px;height:10px;border-radius:50%;background:#E3161B}
+.dot::after{content:'';position:absolute;inset:0;border-radius:50%;background:#E3161B;animation:ping 1.6s ease-out infinite}
+
+.duo{position:relative;overflow:hidden;background:#E3161B}
+.duo img{filter:grayscale(1) contrast(1.35) brightness(1.05);mix-blend-mode:multiply;display:block}
+.member{position:relative;overflow:hidden;background:#1a1a1a}
+.member img{display:block;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.15);transition:filter .6s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+.member:hover img{filter:none;transform:scale(1.04)}
+.row{transition:background .3s ease,padding .3s ease}
+.row:hover{background:#000;color:#fff;padding-left:28px!important}
+.row:hover .row-title{color:#FF3B3F}
+.play{transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+a:hover .play{transform:scale(1.12)}
+
+@supports (animation-timeline: view()){
+  .rv{animation:rise linear both;animation-timeline:view();animation-range:entry 0% cover 28%}
+  .rv-fade{animation:fade linear both;animation-timeline:view();animation-range:entry 0% cover 35%}
+  .big-slide{animation:marquee linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+}
+
+@media (max-width: 900px){
+  .g2{grid-template-columns:minmax(0,1fr)!important}
+  .g4{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .g4 .lead{grid-column:span 2;aspect-ratio:4 / 5!important}
+  .hide-m{display:none!important}
+  .pad{padding-left:22px!important;padding-right:22px!important}
+  .hero-logo{width:100%!important}
+  .clock{font-size:180px!important}
+  .h2{font-size:64px!important}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;opacity:1!important}
+  .ekg-base{stroke-dashoffset:0!important}
+}
+
+.duo .layer{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity .7s ease,transform 1.4s cubic-bezier(.2,.8,.2,1)}
+.duo .layer.on{opacity:1;transform:scale(1)}
+.who{position:absolute;z-index:4;right:56px;bottom:230px;display:flex;flex-direction:column;align-items:flex-end;gap:12px;pointer-events:none}
+.who-name{font-family:'Alumni Sans','Oswald',sans-serif;font-weight:700;font-size:44px;line-height:1;color:#fff;transition:opacity .3s ease,transform .3s ease}
+.who-name.swap{opacity:0;transform:translateY(10px)}
+.who-bars{display:flex;gap:6px}
+.who-bars i{display:block;width:28px;height:4px;background:rgba(255,255,255,.35);transition:background .3s ease,width .3s ease}
+.who-bars i.on{background:#E3161B;width:44px}
+.who-hint{font-size:13px;color:#d8d3cd}
+@media (max-width:900px){.who{display:none}}
+@media (prefers-reduced-motion: reduce){.duo .layer:not(.on){opacity:0!important}}
+
+.trk{border-top:1px solid rgba(0,0,0,.25)}
+.trk-head.link{cursor:pointer}
+.trk-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) auto;gap:24px;align-items:center;padding:24px 0;transition:background .3s ease,padding .3s ease}
+.trk-head:hover,.trk.open .trk-head{background:#000;color:#fff;padding-left:24px;padding-right:16px}
+.trk-head:hover .trk-title,.trk.open .trk-title{color:#FF3B3F}
+.trk-title{font-family:'Alumni Sans','Oswald',sans-serif;font-weight:700;font-size:48px;line-height:1}
+.trk-line{font-family:'Literata',Georgia,serif;font-style:italic;font-size:20px}
+.trk-act{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.trk-tag{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;opacity:.6;white-space:nowrap;cursor:default}
+.trk-tag.new{color:#E3161B;opacity:1}.trk-tag.new::before{content:"● "}
+.trk-btn{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 18px 0 6px;border:0;border-radius:999px;background:#E3161B;color:#fff;font:600 15px 'Golos Text',system-ui,sans-serif;cursor:pointer;text-decoration:none;transition:transform .2s ease}
+.trk-btn:hover{transform:scale(1.05);color:#fff}
+.trk-btn .ic{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:#000}
+.trk-btn.ghost{background:transparent;color:inherit;border:1.5px solid currentColor;padding:0 16px}
+.trk-player{max-height:0;overflow:hidden;background:#000;transition:max-height .5s cubic-bezier(.2,.8,.2,1)}
+.trk.open .trk-player{max-height:260px}
+.trk-player-in{padding:8px 24px 24px}
+.trk-player iframe{display:block;width:100%;height:180px;border:0;border-radius:6px;background:#111}
+.trk-player audio{display:block;width:100%;accent-color:#E3161B}
+.eq{display:inline-flex;gap:2px;align-items:flex-end;height:14px}
+.eq i{display:block;width:3px;background:#fff;animation:eq .8s ease-in-out infinite}
+.eq i:nth-child(2){animation-delay:.2s}.eq i:nth-child(3){animation-delay:.4s}
+@keyframes eq{0%,100%{height:4px}50%{height:14px}}
+@media (max-width:900px){.trk-head{grid-template-columns:minmax(0,1fr) auto}.trk-line{display:none}.trk-title{font-size:36px}}
+</style>
+</head>
+<body>
+
+<div style="width: 100%; min-width: 320px; background: #000000; overflow-x: hidden">
+
+<!-- HERO -->
+<header id="top" style="position: relative; min-height: 100vh; display: flex; flex-direction: column; overflow: hidden; background: #000000">
+  <div id="heroStack" class="duo hero-photo hide-m" style="position: absolute; top: 0; right: 0; bottom: 0; width: 46%">
+    <img src="img/hero.jpg" alt="Гитарист группы на сцене" class="layer" fetchpriority="high" decoding="async" width="525" height="700" style="object-position: 50% 30%">
+  </div>
+  <div class="hide-m" style="position: absolute; top: 0; bottom: 0; right: 46%; width: 30%; background: linear-gradient(90deg, #000000 0%, rgba(0,0,0,0) 100%); transform: translateX(100%)"></div>
+
+  <nav class="pad up" style="position: relative; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 28px 56px">
+    <a href="#top" style="display: flex; align-items: center; gap: 12px; font-size: 15px; color: #d8d3cd; text-decoration: none"><span class="dot"></span>Рок-коллектив из Рыбинска с 2021 года</a>
+    <div class="hide-m" style="display: flex; align-items: center; gap: 32px">
+      <a class="navlink" href="#music">Музыка</a>
+      <a class="navlink" href="#band">Группа</a>
+      <a class="navlink" href="#clip">Клип</a>
+      <a class="navlink" href="#stage">Состав</a>
+    </div>
+    <a class="btn btn-red" data-link="telegram" href="#listen" target="_blank" rel="noopener" style="min-height: 44px; padding: 0 22px; font-size: 15px">Подписаться</a>
+  </nav>
+
+  <div class="pad" style="position: relative; z-index: 3; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; gap: 28px; padding: 40px 56px 180px; max-width: 900px">
+    <h1 class="up d2" style="margin: 0; line-height: 0"><img class="hero-logo" src="img/logo.png" alt="Зал Бит.коМ" width="900" height="558" style="display: block; width: 640px; max-width: 100%; height: auto; filter: drop-shadow(0 6px 30px rgba(0,0,0,.6))"></h1>
+    <p class="poem up d4" style="margin: 0; max-width: 560px; font-size: 24px; line-height: 1.45; color: #ece8e3">У каждой ноты есть своя история, и мы их расскажем</p>
+    <div class="up d5" style="display: flex; flex-wrap: wrap; gap: 14px; margin-top: 8px">
+      <a class="btn btn-red" href="https://vkvideo.ru/video-2000196336_154196336" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"></path></svg>
+        Смотреть клип
+      </a>
+      <a class="btn btn-line" href="#music">О чём мы поём</a>
+    </div>
+  </div>
+
+  <svg aria-hidden="true" viewBox="0 0 1440 140" preserveAspectRatio="none" style="position: absolute; z-index: 2; left: 0; right: 0; bottom: 36px; width: 100%; height: 140px">
+    <path class="ekg-base" d="M0 90 H470 L500 90 L516 40 L540 128 L566 8 L590 116 L606 90 H880 L900 90 L912 62 L928 112 L942 90 H1180 L1196 90 L1204 74 L1214 100 L1222 90 H1440" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+    <path class="ekg-beat" d="M0 90 H470 L500 90 L516 40 L540 128 L566 8 L590 116 L606 90 H880 L900 90 L912 62 L928 112 L942 90 H1180 L1196 90 L1204 74 L1214 100 L1222 90 H1440" fill="none" stroke="#E3161B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"></path>
+  </svg>
+
+  <div style="position: absolute; z-index: 3; left: 0; right: 0; bottom: 0; height: 36px; background: #E3161B; overflow: hidden; display: flex; align-items: center">
+    <div class="track">
+      <span class="poem" style="white-space: nowrap; font-size: 16px; color: #000000; padding-right: 48px">Ты же не Феникс. Я жгу твои корабли &nbsp;&nbsp;/&nbsp;&nbsp; А за стеклом улыбается манекен &nbsp;&nbsp;/&nbsp;&nbsp; Сохрани. И выбери молчать &nbsp;&nbsp;/&nbsp;&nbsp; Два ноль ноль на часах &nbsp;&nbsp;/&nbsp;&nbsp; Вот приложи подорожник &nbsp;&nbsp;/&nbsp;&nbsp; Научиться бы, как ты, хохотать над всеми &nbsp;&nbsp;/&nbsp;&nbsp;</span>
+      <span class="poem" aria-hidden="true" style="white-space: nowrap; font-size: 16px; color: #000000; padding-right: 48px">Ты же не Феникс. Я жгу твои корабли &nbsp;&nbsp;/&nbsp;&nbsp; А за стеклом улыбается манекен &nbsp;&nbsp;/&nbsp;&nbsp; Сохрани. И выбери молчать &nbsp;&nbsp;/&nbsp;&nbsp; Два ноль ноль на часах &nbsp;&nbsp;/&nbsp;&nbsp; Вот приложи подорожник &nbsp;&nbsp;/&nbsp;&nbsp; Научиться бы, как ты, хохотать над всеми &nbsp;&nbsp;/&nbsp;&nbsp;</span>
+    </div>
+  </div>
+</header>
+
+<!-- 2:00 -->
+<section class="pad" style="padding: 140px 56px; background: #000000">
+  <div class="g2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px; align-items: center; max-width: 1320px; margin: 0 auto">
+    <div class="disp clock rv" aria-label="Два часа ночи" style="font-weight: 900; font-size: 300px; line-height: .8; color: #E3161B; letter-spacing: -4px">2<span class="colon">:</span>00</div>
+    <div class="rv" style="display: flex; flex-direction: column; gap: 22px; max-width: 560px">
+      <h2 class="disp h2" style="margin: 0; font-weight: 700; font-size: 72px; line-height: .95">Мы не боимся залезать к тебе в голову</h2>
+      <p style="margin: 0; font-size: 18px; line-height: 1.65; color: #cfcac4">С 2021 года исследуем сложные темы: как люди уживаются друг с другом и с миром вокруг. Особенно в тот час, когда разум уже сдался, а мысли ещё нет.</p>
+      <p style="margin: 0; font-size: 18px; line-height: 1.65; color: #cfcac4">Наши тексты это терапия через сарказм. Музыка от блюзовой меланхолии до гаражного надрыва.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BAND / NAME -->
+<section id="band" style="background: #E4DED8; color: #000000; overflow: hidden">
+  <div style="position: relative">
+    <img class="rv-fade" src="img/band-group.jpg" alt="Участники группы Зал Бит.коМ смотрят в камеру сверху вниз" loading="lazy" decoding="async" width="1200" height="900" style="display: block; width: 100%; height: auto">
+  </div>
+  <div class="pad" style="padding: 100px 56px 130px">
+    <div class="g2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px; max-width: 1320px; margin: 0 auto; align-items: start">
+      <h2 class="disp h2 rv" style="margin: 0; font-weight: 900; font-size: 112px; line-height: .86; text-transform: uppercase">Почему Зал Бит.коМ?</h2>
+      <div class="rv" style="display: flex; flex-direction: column; gap: 20px; padding-top: 12px">
+        <p style="margin: 0; font-size: 20px; line-height: 1.6">Точный смысл названия мы намеренно не раскрываем.</p>
+        <p class="poem" style="margin: 0; font-size: 30px; line-height: 1.35">Единственная подсказка: это наша мечта. Собирать залы битком</p>
+        <a class="btn btn-ink" data-link="donate" href="#listen" target="_blank" rel="noopener" style="align-self: flex-start; margin-top: 12px">Помочь мечте сбыться</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MUSIC / POETRY -->
+<section id="music" class="pad" style="background: #E4DED8; color: #000000; padding: 0 56px 140px">
+  <div style="max-width: 1320px; margin: 0 auto; border-top: 2px solid #000000; padding-top: 72px">
+    <div class="g2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px; align-items: end; margin-bottom: 72px">
+      <div class="rv" style="display: flex; flex-direction: column; gap: 22px">
+        <h2 class="disp h2" style="margin: 0; font-weight: 900; font-size: 112px; line-height: .86; text-transform: uppercase">О чём мы поём</h2>
+        <p style="margin: 0; font-size: 18px; line-height: 1.65; max-width: 540px">Всё начинается с поэзии рыбинского автора Любови Чубовой. Её философские тексты фундамент всего, что мы делаем. Сверху гитарные риффы, выразительные соло и голос Натальи Трубецкой.</p>
+      </div>
+      <blockquote class="poem rv" style="margin: 0; font-size: 44px; line-height: 1.2; color: #000000">Всё вверх тормашками, спутано, сожжено.<span style="display: block; margin-top: 14px; font-size: 18px; font-family: 'Golos Text', system-ui, sans-serif; font-style: normal; color: #4a4540">Та самая магия, когда текст и музыка совпадают по ритмике</span></blockquote>
+    </div>
+
+    <div id="trackList" style="display: flex; flex-direction: column; border-bottom: 1px solid rgba(0,0,0,.25)"></div>
+  </div>
+</section>
+
+<!-- STAGE / MEMBERS -->
+<section id="stage" style="background: #000000; padding: 140px 0 0">
+  <div class="pad" style="padding: 0 56px; max-width: 1432px; margin: 0 auto 56px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 24px">
+    <h2 class="disp h2 rv" style="margin: 0; font-weight: 900; font-size: 112px; line-height: .86; text-transform: uppercase">Кто на сцене</h2>
+    <p class="rv" style="margin: 0; max-width: 420px; font-size: 18px; line-height: 1.6; color: #cfcac4">Живой рок рождается из историй, поэзии и жизни</p>
+  </div>
+  <div class="g4" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px">
+    <figure class="member lead rv" style="margin: 0; aspect-ratio: 3 / 4">
+      <img src="img/vocal.jpg" alt="Вокалистка Наталья Трубецкая поёт на сцене" loading="lazy" decoding="async" width="525" height="700" style="object-position: 55% 30%">
+      <figcaption class="disp" style="position: absolute; left: 20px; bottom: 16px; font-size: 34px; font-weight: 700">Вокал</figcaption>
+    </figure>
+    <figure class="member rv" style="margin: 0; aspect-ratio: 3 / 4">
+      <img src="img/hero.jpg" alt="Гитарист на сцене" loading="lazy" decoding="async" width="525" height="700">
+      <figcaption class="disp" style="position: absolute; left: 20px; bottom: 16px; font-size: 34px; font-weight: 700">Гитара</figcaption>
+    </figure>
+    <figure class="member rv" style="margin: 0; aspect-ratio: 3 / 4">
+      <img src="img/bass.jpg" alt="Бас-гитарист на сцене" loading="lazy" decoding="async" width="525" height="700">
+      <figcaption class="disp" style="position: absolute; left: 20px; bottom: 16px; font-size: 34px; font-weight: 700">Бас</figcaption>
+    </figure>
+    <figure class="member rv" style="margin: 0; aspect-ratio: 3 / 4">
+      <img src="img/keys.jpg" alt="Клавишница на сцене" loading="lazy" decoding="async" width="525" height="700">
+      <figcaption class="disp" style="position: absolute; left: 20px; bottom: 16px; font-size: 34px; font-weight: 700">Клавиши</figcaption>
+    </figure>
+    <figure class="member rv" style="margin: 0; aspect-ratio: 3 / 4">
+      <img src="img/drums.jpg" alt="Барабанщик на сцене" loading="lazy" decoding="async" width="525" height="700">
+      <figcaption class="disp" style="position: absolute; left: 20px; bottom: 16px; font-size: 34px; font-weight: 700">Барабаны</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- CLIP -->
+<section id="clip" style="position: relative; background: #E3161B; color: #000000; overflow: hidden">
+  <div class="duo hide-m" style="position: absolute; inset: 0; opacity: .55">
+    <img src="img/drums.jpg" alt="" loading="lazy" decoding="async" width="525" height="700" style="width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%">
+  </div>
+  <a href="https://vkvideo.ru/video-2000196336_154196336" target="_blank" rel="noopener" class="pad" style="position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 28px; padding: 150px 56px; text-decoration: none; color: #000000; max-width: 1432px; margin: 0 auto">
+    <span style="font-size: 18px; font-weight: 600">Новый клип уже на VK Видео</span>
+    <span class="disp h2" style="font-weight: 900; font-size: 168px; line-height: .82; text-transform: uppercase; max-width: 1000px">Спутано-<br>сожжено</span>
+    <span style="display: flex; align-items: center; gap: 18px; font-size: 20px; font-weight: 600">
+      <span class="play heart" style="display: flex; align-items: center; justify-content: center; width: 88px; height: 88px; border-radius: 50%; background: #000000; color: #ffffff">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
+      </span>
+      Смотреть клип
+    </span>
+  </a>
+</section>
+
+<!-- PROOF -->
+<section class="pad" style="background: #000000; padding: 140px 56px">
+  <div style="max-width: 1320px; margin: 0 auto">
+    <h2 class="disp h2 rv" style="margin: 0 0 64px; font-weight: 900; font-size: 112px; line-height: .86; text-transform: uppercase">Что по делу</h2>
+    <div class="g2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 64px">
+      <div class="rv" style="display: flex; flex-direction: column; gap: 12px; padding: 32px 0; border-top: 1px solid rgba(255,255,255,.3)">
+        <span class="disp" style="font-size: 44px; font-weight: 700; line-height: 1">Фестивали</span>
+        <span style="font-size: 18px; line-height: 1.6; color: #cfcac4">ВолгаФест, Ковчег, Демино-Фест и Небо</span>
+      </div>
+      <div class="rv" style="display: flex; flex-direction: column; gap: 12px; padding: 32px 0; border-top: 1px solid rgba(255,255,255,.3)">
+        <span class="disp" style="font-size: 44px; font-weight: 700; line-height: 1">Москва</span>
+        <span style="font-size: 18px; line-height: 1.6; color: #cfcac4">Выступление в баре Мумий Тролль на фестивале Show Class</span>
+      </div>
+      <div class="rv" style="display: flex; flex-direction: column; gap: 12px; padding: 32px 0; border-top: 1px solid rgba(255,255,255,.3)">
+        <span class="disp" style="font-size: 44px; font-weight: 700; line-height: 1">Радио России</span>
+        <span style="font-size: 18px; line-height: 1.6; color: #cfcac4">Два эфира в программе Aurum Inutile с треками Он говорит и Повелитель мух</span>
+      </div>
+      <div class="rv" style="display: flex; flex-direction: column; gap: 12px; padding: 32px 0; border-top: 1px solid rgba(255,255,255,.3)">
+        <span class="disp" style="font-size: 44px; font-weight: 700; line-height: 1">Сбер.Звук</span>
+        <span style="font-size: 18px; line-height: 1.6; color: #cfcac4">Сингл 2:00 попал в редакторский плейлист</span>
+      </div>
+    </div>
+  </div>
+  <div aria-hidden="true" style="margin-top: 64px; overflow: hidden">
+    <div class="track track-slow">
+      <span class="disp" style="white-space: nowrap; font-weight: 700; font-size: 56px; line-height: 1; text-transform: uppercase; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.5); padding-right: 60px">ВолгаФест / Ковчег / Демино-Фест / Небо / Show Class /</span>
+      <span class="disp" style="white-space: nowrap; font-weight: 700; font-size: 56px; line-height: 1; text-transform: uppercase; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.5); padding-right: 60px">ВолгаФест / Ковчег / Демино-Фест / Небо / Show Class /</span>
+    </div>
+  </div>
+</section>
+
+<!-- PLANS -->
+<section id="listen" class="pad" style="background: #E4DED8; color: #000000; padding: 140px 56px">
+  <div style="max-width: 1320px; margin: 0 auto">
+    <div class="g2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px; align-items: end; margin-bottom: 64px">
+      <h2 class="disp h2 rv" style="margin: 0; font-weight: 900; font-size: 112px; line-height: .86; text-transform: uppercase">Три сингла до Нового года</h2>
+      <p class="rv" style="margin: 0; font-size: 18px; line-height: 1.65; max-width: 480px">Подпишись, чтобы услышать их первым. Сохранённый трек лучше всего помогает группе попасть в плейлисты</p>
+    </div>
+    <div class="g2" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-bottom: 64px">
+      <div class="rv" style="display: flex; flex-direction: column; justify-content: space-between; gap: 60px; padding: 28px; min-height: 220px; border: 2px solid #000000; border-radius: 6px">
+        <span class="disp" style="font-size: 96px; font-weight: 900; line-height: .8">01</span>
+        <span style="display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600"><span class="dot"></span>Скоро</span>
+      </div>
+      <div class="rv" style="display: flex; flex-direction: column; justify-content: space-between; gap: 60px; padding: 28px; min-height: 220px; border: 2px solid #000000; border-radius: 6px">
+        <span class="disp" style="font-size: 96px; font-weight: 900; line-height: .8">02</span>
+        <span style="display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600"><span class="dot"></span>Скоро</span>
+      </div>
+      <div class="rv" style="display: flex; flex-direction: column; justify-content: space-between; gap: 60px; padding: 28px; min-height: 220px; border: 2px solid #000000; border-radius: 6px">
+        <span class="disp" style="font-size: 96px; font-weight: 900; line-height: .8">03</span>
+        <span style="display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600"><span class="dot"></span>Скоро</span>
+      </div>
+    </div>
+    <div class="rv" style="display: flex; flex-wrap: wrap; gap: 14px">
+      <a class="btn btn-ink" data-link="yandex" href="#music" target="_blank" rel="noopener">Яндекс Музыка</a>
+      <a class="btn btn-ink" data-link="zvuk" href="#music" target="_blank" rel="noopener">Звук</a>
+      <a class="btn btn-ink" data-link="vk" href="#music" target="_blank" rel="noopener">ВКонтакте</a>
+      <a class="btn btn-ink" data-link="telegram" href="#music" target="_blank" rel="noopener">Telegram</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="position: relative; background: #000000; overflow: hidden">
+  <div style="position: relative">
+  <img class="rv-fade" src="img/footer-group.jpg" alt="Группа Зал Бит.коМ сидит на полу студии" loading="lazy" decoding="async" width="1200" height="900" style="display: block; width: 100%; max-height: 80vh; object-fit: cover; object-position: 50% 0%; opacity: .5">
+  <div class="pad" style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 24px; padding: 56px; background: linear-gradient(0deg, rgba(0,0,0,.85) 0%, rgba(0,0,0,0) 60%)">
+    <p class="poem rv" style="margin: 0; max-width: 640px; font-size: 26px; line-height: 1.4">Включай, если хочешь не просто слушать, а проживать музыку</p>
+    <h2 class="poem rv" style="margin: 0; font-weight: 400; font-size: 64px; line-height: 1.1">Добро пожаловать в зал</h2>
+    <div class="rv" style="display: flex; flex-wrap: wrap; gap: 12px">
+      <a class="btn btn-red" data-link="telegram" href="#listen" target="_blank" rel="noopener">Подписаться в Telegram</a>
+      <a class="btn btn-line" data-link="vk" href="#listen" target="_blank" rel="noopener">Группа ВКонтакте</a>
+    </div>
+  </div>
+  </div>
+  <div class="pad" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; padding: 32px 56px; border-top: 1px solid rgba(255,255,255,.2)">
+    <img src="img/logo.png" alt="Зал Бит.коМ" loading="lazy" decoding="async" width="900" height="558" style="height: 80px; width: auto">
+    <div style="display: flex; flex-wrap: wrap; gap: 22px; align-items: center">
+      <a class="navlink" data-link="vk" href="#listen" target="_blank" rel="noopener">ВКонтакте</a>
+      <a class="navlink" data-link="telegram" href="#listen" target="_blank" rel="noopener">Telegram</a>
+      <a class="navlink" data-link="yandex" href="#listen" target="_blank" rel="noopener">Яндекс Музыка</a>
+      <a class="navlink" data-link="zvuk" href="#listen" target="_blank" rel="noopener">Звук</a>
+      <span style="font-size: 14px; color: #a9a39c">Рыбинск, с 2021 года</span>
+    </div>
+  </div>
+</footer>
+
+</div>
+<div class="who" id="heroWho" aria-live="polite">
+  <span class="who-hint">Веди курсором, чтобы сменить участника</span>
+  <span class="who-name" id="heroName">Гитара</span>
+  <span class="who-bars" id="heroBars"></span>
+</div>
+<script>
+(function(){
+  var hero=document.getElementById('top'),stack=document.getElementById('heroStack');
+  var who=document.getElementById('heroWho'),nameEl=document.getElementById('heroName'),bars=document.getElementById('heroBars');
+  if(!hero||!stack)return;
+  hero.appendChild(who);
+  var pos={'Вокал':'55% 28%','Гитара':'50% 30%','Бас':'50% 28%','Клавиши':'50% 30%','Барабаны':'50% 40%'};
+  var first=stack.querySelector('.layer');
+  var figs=document.querySelectorAll('#stage .member'),layers=[],names=[];
+  figs.forEach(function(f){
+    var src=f.querySelector('img'),cap=f.querySelector('figcaption').textContent.trim();
+    var im;
+    if(cap==='Гитара'&&first){im=first}else{
+      im=document.createElement('img');im.className='layer';im.src=src.src;im.alt=src.alt;im.style.objectPosition=pos[cap]||'50% 30%';stack.appendChild(im);
+    }
+    layers.push(im);names.push(cap);
+    bars.appendChild(document.createElement('i'));
+  });
+  var barEls=bars.querySelectorAll('i'),cur=-1;
+  function show(i){
+    if(i===cur)return;cur=i;
+    layers.forEach(function(l,k){l.classList.toggle('on',k===i)});
+    barEls.forEach(function(b,k){b.classList.toggle('on',k===i)});
+    nameEl.classList.add('swap');
+    setTimeout(function(){nameEl.textContent=names[i];nameEl.classList.remove('swap')},180);
+  }
+  show(names.indexOf('Вокал')>=0?names.indexOf('Вокал'):0);
+  var idle,auto;
+  function startAuto(){clearInterval(auto);auto=setInterval(function(){show((cur+1)%layers.length)},2800)}
+  startAuto();
+  hero.addEventListener('mousemove',function(e){
+    clearInterval(auto);clearTimeout(idle);
+    var r=hero.getBoundingClientRect();
+    var i=Math.min(layers.length-1,Math.max(0,Math.floor((e.clientX-r.left)/r.width*layers.length)));
+    show(i);
+    idle=setTimeout(startAuto,4000);
+  });
+})();
+</script>
+<script>
+(function(){
+  var list=document.getElementById('trackList'); if(!list||typeof TRACKS==='undefined')return;
+  var PLAY='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>';
+  function esc(t){return String(t||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function yaSrc(u){
+    var m=String(u||'').match(/album\/(\d+)\/track\/(\d+)/); if(m)return 'https://music.yandex.ru/iframe/#track/'+m[2]+'/'+m[1];
+    m=String(u||'').match(/iframe\/#?track\/(\d+)\/(\d+)/); if(m)return 'https://music.yandex.ru/iframe/#track/'+m[1]+'/'+m[2];
+    return '';
+  }
+  var items=[];
+  TRACKS.forEach(function(t,i){
+    var ya=yaSrc(t.yandex), playable=!!(ya||t.mp3);
+    var el=document.createElement('div'); el.className='trk';
+    el.innerHTML=
+      '<div class="trk-head">'+
+        '<span class="trk-title">'+esc(t.title)+'</span>'+
+        '<span class="trk-line">'+esc(t.line)+'</span>'+
+        '<span class="trk-act">'+
+          (t.tag?'<span class="trk-tag'+(t.isNew?' new':'')+'">'+esc(t.tag)+'</span>':'')+
+          (t.clip?'<a class="trk-btn ghost" href="'+esc(t.clip)+'" target="_blank" rel="noopener">Клип</a>':'')+
+          (playable?'<button class="trk-btn" type="button" aria-expanded="false"><span class="ic">'+PLAY+'</span><span class="lbl">Слушать</span></button>':'')+
+        '</span>'+
+      '</div>'+
+      (playable?'<div class="trk-player"><div class="trk-player-in"></div></div>':'');
+    list.appendChild(el);
+    var head=el.querySelector('.trk-head'), url=t.yandex||t.clip;
+    if(url){head.classList.add('link');head.title='Открыть трек в новой вкладке';
+      head.addEventListener('click',function(e){if(e.target.closest('a,button'))return;window.open(url,'_blank','noopener')});}
+    if(!playable)return;
+    var btn=el.querySelector('.trk-btn:not(.ghost)'),box=el.querySelector('.trk-player-in');
+    var item={el:el,btn:btn,box:box,ya:ya,mp3:t.mp3,title:t.title};
+    items.push(item);
+    btn.addEventListener('click',function(){toggle(item)});
+  });
+  function close(it){
+    it.el.classList.remove('open');it.btn.setAttribute('aria-expanded','false');
+    it.btn.querySelector('.ic').innerHTML=PLAY;it.btn.querySelector('.lbl').textContent='Слушать';
+    var b=it.box; setTimeout(function(){if(!it.el.classList.contains('open'))b.innerHTML=''},500);
+  }
+  function toggle(it){
+    var isOpen=it.el.classList.contains('open');
+    items.forEach(function(o){if(o.el.classList.contains('open'))close(o)});
+    if(isOpen)return;
+    if(it.ya){it.box.innerHTML='<iframe src="'+it.ya+'" title="'+esc(it.title)+' на Яндекс Музыке" loading="lazy" allow="autoplay; encrypted-media"></iframe>'}
+    else{it.box.innerHTML='<audio controls autoplay preload="none" src="'+esc(it.mp3)+'"></audio>'}
+    it.el.classList.add('open');it.btn.setAttribute('aria-expanded','true');
+    it.btn.querySelector('.ic').innerHTML='<span class="eq"><i></i><i></i><i></i></span>';
+    it.btn.querySelector('.lbl').textContent='Свернуть';
+  }
+})();
+(function(){
+  if(typeof LINKS==='undefined')return;
+  document.querySelectorAll('[data-link]').forEach(function(a){
+    var u=LINKS[a.dataset.link];
+    if(u){a.href=u}else{a.removeAttribute('target')}
+  });
+})();
+</script>
+</body>
+</html>
