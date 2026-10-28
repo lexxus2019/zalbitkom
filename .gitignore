@@ -1,0 +1,32 @@
+# зависимости и сборки
+node_modules/
+dist/
+target/
+*.jar
+
+# локальный сервер БД и переносной PostgreSQL
+app/pgsql/
+app/pgdata/
+app/data/
+app/*.log
+app/backend/data/
+
+# локальные настройки/секреты
+.env
+*.local
+*.pem
+*.key
+
+# IDE / ОС
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.iml
+
+# временное
+*.bak
+
+# ������/��������� ����� � �����
+IMG_*.MOV
+*.MOV

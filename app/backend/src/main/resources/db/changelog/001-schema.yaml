@@ -1,0 +1,53 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-track
+      author: zalbit
+      changes:
+        - createTable:
+            tableName: track
+            columns:
+              - column: { name: id, type: bigint, autoIncrement: true, constraints: { primaryKey: true, nullable: false } }
+              - column: { name: title, type: varchar(200), constraints: { nullable: false } }
+              - column: { name: line, type: varchar(500) }
+              - column: { name: tag, type: varchar(100) }
+              - column: { name: is_new, type: boolean, defaultValueBoolean: false }
+              - column: { name: yandex_url, type: varchar(500) }
+              - column: { name: mp3_url, type: varchar(500) }
+              - column: { name: clip_url, type: varchar(500) }
+              - column: { name: cover_url, type: varchar(500) }
+              - column: { name: sort_order, type: integer, defaultValueNumeric: 0 }
+  - changeSet:
+      id: 002-social-link
+      author: zalbit
+      changes:
+        - createTable:
+            tableName: social_link
+            columns:
+              - column: { name: id, type: bigint, autoIncrement: true, constraints: { primaryKey: true, nullable: false } }
+              - column: { name: key_name, type: varchar(50), constraints: { unique: true, nullable: false } }
+              - column: { name: label, type: varchar(100) }
+              - column: { name: url, type: varchar(500) }
+              - column: { name: sort_order, type: integer, defaultValueNumeric: 0 }
+  - changeSet:
+      id: 003-contact-message
+      author: zalbit
+      changes:
+        - createTable:
+            tableName: contact_message
+            columns:
+              - column: { name: id, type: bigint, autoIncrement: true, constraints: { primaryKey: true, nullable: false } }
+              - column: { name: name, type: varchar(100) }
+              - column: { name: reply_to, type: varchar(200) }
+              - column: { name: body, type: varchar(3000), constraints: { nullable: false } }
+              - column: { name: status, type: varchar(20), defaultValue: 'NEW' }
+              - column: { name: created_at, type: timestamp, defaultValueComputed: 'now()' }
+  - changeSet:
+      id: 004-admin-user
+      author: zalbit
+      changes:
+        - createTable:
+            tableName: admin_user
+            columns:
+              - column: { name: id, type: bigint, autoIncrement: true, constraints: { primaryKey: true, nullable: false } }
+              - column: { name: username, type: varchar(100), constraints: { unique: true, nullable: false } }
+              - column: { name: password_hash, type: varchar(200), constraints: { nullable: false } }

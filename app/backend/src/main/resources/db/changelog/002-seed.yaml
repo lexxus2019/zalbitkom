@@ -1,0 +1,100 @@
+﻿databaseChangeLog:
+  - changeSet:
+      id: 002-seed-tracks
+      author: zalbit
+      preConditions:
+        - onFail: MARK_RAN
+        - sqlCheck:
+            expectedResult: "0"
+            sql: "select count(*) from track"
+      changes:
+        - insert:
+            tableName: track
+            columns:
+              - column: { name: title, value: 'Подорожник' }
+              - column: { name: line, value: 'Вальс угасает лениво' }
+              - column: { name: tag, value: 'Новый релиз' }
+              - column: { name: is_new, valueBoolean: true }
+              - column: { name: sort_order, valueNumeric: 1 }
+        - insert:
+            tableName: track
+            columns:
+              - column: { name: title, value: 'Спутано-сожжено' }
+              - column: { name: line, value: 'Ты же не Феникс. Я жгу твои корабли' }
+              - column: { name: tag, value: 'Сингл' }
+              - column: { name: clip_url, value: 'https://vkvideo.ru/video-2000196336_154196336' }
+              - column: { name: sort_order, valueNumeric: 2 }
+        - insert:
+            tableName: track
+            columns:
+              - column: { name: title, value: '2:00' }
+              - column: { name: line, value: 'Знаю, ты не спишь, как и я сейчас' }
+              - column: { name: tag, value: 'Плейлист Звука' }
+              - column: { name: sort_order, valueNumeric: 3 }
+        - insert:
+            tableName: track
+            columns:
+              - column: { name: title, value: 'Повелитель мух' }
+              - column: { name: line, value: 'Сохрани. И выбери молчать' }
+              - column: { name: tag, value: 'Радио России' }
+              - column: { name: sort_order, valueNumeric: 4 }
+        - insert:
+            tableName: track
+            columns:
+              - column: { name: title, value: 'Он говорит' }
+              - column: { name: line, value: 'Стихи, которым сто лет, и голос, который звучит сегодня' }
+              - column: { name: tag, value: 'Радио России' }
+              - column: { name: sort_order, valueNumeric: 5 }
+        - insert:
+            tableName: track
+            columns:
+              - column: { name: title, value: 'Пенелопа' }
+              - column: { name: line, value: 'Научиться бы, как ты, хохотать над всеми' }
+              - column: { name: tag, value: 'Сингл' }
+              - column: { name: sort_order, valueNumeric: 6 }
+        - insert:
+            tableName: track
+            columns:
+              - column: { name: title, value: 'Сеть' }
+              - column: { name: line, value: 'А за стеклом улыбается манекен' }
+              - column: { name: tag, value: 'Сингл' }
+              - column: { name: sort_order, valueNumeric: 7 }
+  - changeSet:
+      id: 002-seed-links
+      author: zalbit
+      preConditions:
+        - onFail: MARK_RAN
+        - sqlCheck:
+            expectedResult: "0"
+            sql: "select count(*) from social_link"
+      changes:
+        - insert:
+            tableName: social_link
+            columns:
+              - column: { name: key_name, value: vk }
+              - column: { name: label, value: 'ВКонтакте' }
+              - column: { name: sort_order, valueNumeric: 1 }
+        - insert:
+            tableName: social_link
+            columns:
+              - column: { name: key_name, value: telegram }
+              - column: { name: label, value: 'Telegram' }
+              - column: { name: sort_order, valueNumeric: 2 }
+        - insert:
+            tableName: social_link
+            columns:
+              - column: { name: key_name, value: yandex }
+              - column: { name: label, value: 'Яндекс Музыка' }
+              - column: { name: sort_order, valueNumeric: 3 }
+        - insert:
+            tableName: social_link
+            columns:
+              - column: { name: key_name, value: zvuk }
+              - column: { name: label, value: 'Звук' }
+              - column: { name: sort_order, valueNumeric: 4 }
+        - insert:
+            tableName: social_link
+            columns:
+              - column: { name: key_name, value: donate }
+              - column: { name: label, value: 'Донат' }
+              - column: { name: sort_order, valueNumeric: 5 }

@@ -1,0 +1,23 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:zalbit}
+    username: ${DB_USER:zalbit}
+    password: ${DB_PASSWORD:zalbit}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+  servlet:
+    multipart:
+      max-file-size: 5MB
+
+zalbit:
+  jwt-secret: ${JWT_SECRET:change-me-in-production-min-32-chars-long!!}
+  admin-username: ${ADMIN_USER:admin}
+  admin-password: ${ADMIN_PASSWORD:admin123}
+  upload-dir: ${UPLOAD_DIR:./data/uploads}
